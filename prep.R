@@ -41,4 +41,27 @@ head(tradeTimes5minute.cumtable)
 plot(tradeTimes5minute.cumtable, xlab = "Time in hour", ylab = "Number of trades",
      main = "Trade counts in 5 minute periode (all days combined)", cex.main = .9)
 
+# More trades at beginning and at end of the day than in middle.
+# Note 9.5 = 9:30 am and 16.0 = 4 pm
 
+# Explore individual days
+# Make a table: rows = 5 minute periode, cols = Dates, entries = # of trades
+tradeTimes5minute.daytable = table(tradeTimes5minute, tradesdata[,"Date"])
+print(tradeTimes5minute.daytable)
+
+# Make a plot for export
+n = nrow(tradeTimes5minute.daytable)
+cols =c(rep('orange', n), rep('blue', n), rep('green', n), rep('red', n))
+barplot(tradeTimes5minute.daytable, beside = TRUE, 
+        col = cols, cex.main = 1.2, space = c(0,1), border = NA, cex.names = 1,
+        names.arg = c("3/3/2014", "3/4/2014", "3/5/2014", "3/6/2014"),
+        main = "Table of trade counts in 5 minute periods by date")
+
+# More trades at beginning and end of each day
+
+# Create a csv file holding the dataframe for analysis in studio6_review
+tradesDataframe = data.frame(Date = tradesdata[, 'Date'],
+                       fiveMinuteSlot = tradeTimes5minute,
+                       timeNumber = tradesdata.timeColumn)
+
+write.csv(tradesDataframe, "tradesDataframe.csv")
